@@ -1,0 +1,20 @@
+{
+    "name": "lybc/php-redis-server",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lybc",
+            "email": "yibocheng.li@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [
+            "./RedisServer.php"
+        ]
+    }
+}
