@@ -2,7 +2,10 @@
 require_once "vendor/autoload.php";
 
 use App\Command\CommandExecutor;
+use App\Command\DelCommand;
 use App\Command\GetCommand;
+use App\Command\LPopCommand;
+use App\Command\LPushCommand;
 use App\Command\SetCommand;
 use App\Resp\Parser;
 use App\Storage\Memory;
@@ -17,15 +20,19 @@ $server->set([
 ]);
 
 $server->on('WorkerStart', function ($server, $worker_id) {
-    CommandExecutor::register('SET', new SetCommand());
-    CommandExecutor::register('GET', new GetCommand());
+    CommandExecutor::register(new SetCommand());
+    CommandExecutor::register(new GetCommand());
+    CommandExecutor::register(new LPushCommand());
+    CommandExecutor::register(new LPopCommand());
+    CommandExecutor::register(new DelCommand());
 
     // 服务启动时，将rdb文件加载到内存中
+
     Memory::load();
     // 启动定时器将内存数据存储到rdb文件中
     Timer::tick(10000, function () {
         echo sprintf("[%s] 定时器执行\n", date('Y-m-d H:i:s'));
-        Memory::save();
+        Memory::dump();
     });
 });
 

@@ -1,20 +1,24 @@
 <?php
 namespace App\Command;
 
-use App\Resp\Integer;
+use App\Resp\BulkString;
+use App\Resp\Error;
 use App\Resp\Str;
 use App\Storage\Memory;
-use Swoole\Table;
 
 class GetCommand extends AbstractRedisCommand
 {
-    protected $name = 'SET';
+    public $name = 'GET';
 
     public function handle(array $params)
     {
         if (isset(Memory::$volatile[$params[0]])) {
-            return Str::encode(Memory::$volatile[$params[0]]);
+            $result = Memory::$volatile[$params[0]];
+            if (is_string($result)) {
+                return Str::encode(Memory::$volatile[$params[0]]);
+            }
+            return Error::encode('WRONGTYPE Operation against a key holding the wrong kind of value');
         }
-        return Str::encode(null);
+        return BulkString::nil();
     }
 }

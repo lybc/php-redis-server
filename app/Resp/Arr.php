@@ -3,7 +3,12 @@ namespace App\Resp;
 
 class Arr implements RespDataType
 {
-    static function encode($val)
+    public static function nil()
+    {
+        return "*-1\r\n";
+    }
+
+    public static function encode($val)
     {
         $result = "*" . count($val) . "\r\n";
 

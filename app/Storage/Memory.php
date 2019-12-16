@@ -3,15 +3,20 @@ namespace App\Storage;
 
 class Memory
 {
+    /**
+     * @var \SplObjectStorage
+     */
     public static $volatile = [];
 
     public static function load()
     {
-        self::$volatile = json_decode(file_get_contents('dump.rdb'), true);
+        if (file_exists('dump.rdb')) {
+            self::$volatile = unserialize(file_get_contents('dump.rdb'));
+        }
     }
 
-    public static function save()
+    public static function dump()
     {
-        file_put_contents('dump.rdb', json_encode(self::$volatile));
+        file_put_contents('dump.rdb', serialize(self::$volatile));
     }
 }

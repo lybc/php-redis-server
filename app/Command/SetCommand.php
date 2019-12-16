@@ -8,7 +8,7 @@ use Swoole\Table;
 
 class SetCommand extends AbstractRedisCommand
 {
-    protected $name = 'SET';
+    public $name = 'SET';
 
     public function handle(array $params)
     {

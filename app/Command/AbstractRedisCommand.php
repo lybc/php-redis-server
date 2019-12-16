@@ -8,7 +8,7 @@ use Swoole\Table;
 
 abstract class AbstractRedisCommand
 {
-    protected $name;
+    public $name;
 
     abstract public function handle(array $params);
 }
